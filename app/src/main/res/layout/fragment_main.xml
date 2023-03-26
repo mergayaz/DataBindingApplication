@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+весь макет оборачивается в <layout> для обеспечения привязки данных
+по умолчанию имя класса выбирается в соответствии с именем макета только вместо змеиной нотации
+(fragment_main) используется верблюжья (FragmentMain)
+таким образом данный макет уже сгенерировал файл привязки с именем FragmentMainBinding
+этот класс будет использоваться для привязки данных: вместо заполнения иерархии представлений
+с LayoutInflater, будет заполняться экземпляр FragmentMainBinding
+FragmentMainBinding сохраняет иерархию представлений в get-методе с именем getRoot(),
+кроме этого сохраняются именованные ссылки для всех представлений, помеченных в файле макета
+атрибутом android:id
+-->
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+    <data>
+        <variable
+            name="someModel"
+            type="kz.kuz.databinding.SomeClass" />
+    </data>
+    <!--
+    добавляем в макет класс SomeClass и называем его "someModel"
+    так он будет называться в макете
+    -->
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:textAlignment="center" />
+
+        <Button
+            android:id="@+id/btn1"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_margin="16dp"
+            android:text="@{`Title is ` + someModel.title}" />
+        <!--
+        для конкатенации нужно использовать обратные апострофы
+        вместо getTitle() используется title и макет это понимает (результат идентичен)
+        помимо title и getTitle() также можно использовать someString
+        -->
+
+        <Button
+            android:id="@+id/btn2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:onClick="@{() -> someModel.CallToast(context)}"
+            android:text="Button" />
+        <!--
+        на нажатие кнопки вызываем метод CallToast из класса SomeClass,
+        в параметрах передаём context
+        также можно передать текущий View (это будет View.OnClickListener)
+        для этого его нужно как-то обозвать в первых скобках, например так:
+        @{(view) -> anyModel.anyMethod(view)} или так:
+        @{(anyName) -> anyModel.anyMethod(anyName)}
+        метод может быть вызван и без параметров
+        -->
+    </LinearLayout>
+</layout>
